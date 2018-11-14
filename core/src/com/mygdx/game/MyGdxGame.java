@@ -27,7 +27,7 @@ public class MyGdxGame extends Game {
         mouseyTexture = new Texture(
                 Gdx.files.internal("mouse.png") );
         mouseyX = 20;
-        mouseyY = 20;\
+        mouseyY = 20;
         cheeseTexture = new Texture(
                 Gdx.files.internal("cheese.png") );
         cheeseX = 140;
