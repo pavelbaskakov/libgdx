@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -21,6 +23,7 @@ import com.badlogic.gdx.utils.Array;
 public class CheesePlease5 extends Game {
     public Stage mainStage;
     private Stage uiStage;
+    private Camera cam;
     private AnimatedActor mousey;
     private BaseActor cheese;
     private BaseActor floor;
@@ -29,6 +32,12 @@ public class CheesePlease5 extends Game {
     private TextureRegion[] frames = new TextureRegion[4];
     private float timeElapsed;
     private Label timeLabel;
+    // game world dimensions
+    final int mapWidth = 800;
+    final int mapHeight = 800;
+    // window dimensions
+    final int viewWidth = 640;
+    final int viewHeight = 480;
 
     public void create() {
         timeElapsed = 0;
@@ -48,16 +57,16 @@ public class CheesePlease5 extends Game {
         Animation anim = new Animation(0.1f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
         mainStage = new Stage();
         uiStage = new Stage();
+        cam = mainStage.getCamera();
         mainStage.addActor(timeLabel);
         floor = new BaseActor();
-        floor.setTexture(new
-                Texture(Gdx.files.internal("tiles.jpg")));
+        floor.setTexture( new
+                Texture(Gdx.files.internal("tiles-800-800.jpg")) );
         floor.setPosition(0, 0);
         mainStage.addActor(floor);
         cheese = new BaseActor();
-        cheese.setTexture(new
-                Texture(Gdx.files.internal("cheese.png")));
-        cheese.setPosition(100, 120);
+        cheese.setTexture(new Texture(Gdx.files.internal("cheese.png")));
+        cheese.setPosition(600, 720);
         mainStage.addActor(cheese);
         mousey = new AnimatedActor();
         mousey.setAnimation( anim );
@@ -67,8 +76,7 @@ public class CheesePlease5 extends Game {
         mousey.setOrigin( mousey.getWidth()/2, mousey.getHeight()/2);
         mainStage.addActor(mousey);
         winText = new BaseActor();
-        winText.setTexture(new
-                Texture(Gdx.files.internal("you-win.png")));
+        winText.setTexture(new Texture(Gdx.files.internal("you-win.png")));
         winText.setPosition(170, 160);
         winText.setVisible(false);
         uiStage.addActor(winText);
@@ -91,9 +99,15 @@ public class CheesePlease5 extends Game {
             mousey.velocityY += 550;
         if (Gdx.input.isKeyJustPressed(Keys.SPACE))
             mousey.velocityY -= 550;
+        if ( mousey.getX() < 0 )
+            mousey.setX(0);
+        if (mousey.getX() > mapWidth - mousey.getWidth())
+            mousey.setX( mapWidth - mousey.getWidth());
 // update
         float dt = Gdx.graphics.getDeltaTime();
         mainStage.act(dt);
+        mousey.setX( MathUtils.clamp( mousey.getX(), 0, mapWidth - mousey.getWidth() ));
+        mousey.setY( MathUtils.clamp( mousey.getY(), 0, mapHeight - mousey.getHeight() ));
 // check win condition: mousey must be overlapping cheese
         Rectangle cheeseRectangle
                 = cheese.getBoundingRectangle();
@@ -133,5 +147,11 @@ public class CheesePlease5 extends Game {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         mainStage.draw();
         uiStage.draw();
+        // center camera on player
+        cam.position.set( mousey.getX() + mousey.getOriginX(), mousey.getY() + mousey.getOriginY(), 0 );
+// bound camera to layout
+        cam.position.x = MathUtils.clamp(cam.position.x, viewWidth/2, mapWidth - viewWidth/2);
+        cam.position.y = MathUtils.clamp(cam.position.y, viewHeight/2, mapHeight - viewHeight/2);
+        cam.update();
     }
 }
