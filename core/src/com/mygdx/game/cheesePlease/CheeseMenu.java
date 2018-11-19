@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.cheesePlease;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.Screen;
+import com.mygdx.game.BaseActor;
+
 public class CheeseMenu implements Screen
 {
     private Stage uiStage;

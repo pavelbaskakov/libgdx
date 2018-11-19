@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.cheesePlease;
 import com.badlogic.gdx.Game;
 
 public class CheeseGame extends Game {

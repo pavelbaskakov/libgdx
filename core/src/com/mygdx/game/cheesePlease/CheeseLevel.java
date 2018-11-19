@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.cheesePlease;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -20,6 +19,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.Screen;
+import com.mygdx.game.AnimatedActor;
+import com.mygdx.game.BaseActor;
 
 public class CheeseLevel implements Screen {
     private Stage mainStage;

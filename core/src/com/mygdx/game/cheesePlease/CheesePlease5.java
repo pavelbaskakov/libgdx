@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.cheesePlease;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -19,6 +19,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.AnimatedActor;
+import com.mygdx.game.BaseActor;
 
 public class CheesePlease5 extends Game {
     public Stage mainStage;

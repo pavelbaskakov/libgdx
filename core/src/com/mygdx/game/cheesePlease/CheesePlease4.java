@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.game.cheesePlease;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -6,21 +6,36 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.AnimatedActor;
+import com.mygdx.game.BaseActor;
 
-public class CheesePlease3 extends Game {
+public class CheesePlease4 extends Game {
     public Stage mainStage;
-    private BaseActor mousey;
+    private AnimatedActor mousey;
     private BaseActor cheese;
     private BaseActor floor;
     private BaseActor winText;
     private boolean win;
+    private TextureRegion[] frames = new TextureRegion[4];
 
     public void create() {
+        for (int n = 0; n < 4; n++) {
+            String fileName = "mouse" + n + ".png";
+            Texture tex = new Texture(Gdx.files.internal(fileName));
+            tex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+            frames[n] = new TextureRegion( tex );
+        }
+        Array<TextureRegion> framesArray = new Array<TextureRegion>(frames);
+        Animation anim = new Animation(0.1f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
         mainStage = new Stage();
         floor = new BaseActor();
         floor.setTexture(new
@@ -32,12 +47,12 @@ public class CheesePlease3 extends Game {
                 Texture(Gdx.files.internal("cheese.png")));
         cheese.setPosition(100, 120);
         mainStage.addActor(cheese);
-        mousey = new BaseActor();
-        mousey.setTexture(new
-                Texture(Gdx.files.internal("mouse.png")));
-        mousey.setOrigin( mousey.getWidth()/2, mousey.getHeight()/2
-        );
-        mousey.setPosition(20, 20);
+        mousey = new AnimatedActor();
+        mousey.setAnimation( anim );
+        mousey.setOrigin( mousey.getWidth()/2, mousey.getHeight()/2);
+        mousey.setPosition( 20, 20 );
+        mainStage.addActor(mousey);
+        mousey.setOrigin( mousey.getWidth()/2, mousey.getHeight()/2);
         mainStage.addActor(mousey);
         winText = new BaseActor();
         winText.setTexture(new
@@ -59,6 +74,10 @@ public class CheesePlease3 extends Game {
             mousey.velocityY += 150;
         if (Gdx.input.isKeyPressed(Keys.DOWN))
             mousey.velocityY -= 150;
+        if (Gdx.input.isKeyPressed(Keys.SPACE))
+            mousey.velocityY += 550;
+        if (Gdx.input.isKeyJustPressed(Keys.SPACE))
+            mousey.velocityY -= 550;
 // update
         float dt = Gdx.graphics.getDeltaTime();
         mainStage.act(dt);
