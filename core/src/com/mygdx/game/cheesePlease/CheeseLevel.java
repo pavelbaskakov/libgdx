@@ -3,28 +3,25 @@ package com.mygdx.game.cheesePlease;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.AnimatedActor;
 import com.mygdx.game.BaseActor;
+import com.mygdx.game.BaseScreen;
 
-public class CheeseLevel implements Screen {
-    private Stage mainStage;
-    private Stage uiStage;
+public class CheeseLevel extends BaseScreen {
     private AnimatedActor mousey;
     private BaseActor cheese;
     private BaseActor floor;
@@ -35,19 +32,12 @@ public class CheeseLevel implements Screen {
     // game world dimensions
     final int mapWidth = 800;
     final int mapHeight = 800;
-    // window dimensions
-    final int viewWidth = 640;
-    final int viewHeight = 480;
-    public Game game;
 
     public CheeseLevel(Game g) {
-        game = g;
-        create();
+        super(g);
     }
 
     public void create() {
-        mainStage = new Stage();
-        uiStage = new Stage();
         timeElapsed = 0;
         floor = new BaseActor();
         floor.setTexture(new Texture(Gdx.files.internal("tiles-800-800.jpg")));
@@ -62,14 +52,11 @@ public class CheeseLevel implements Screen {
         TextureRegion[] frames = new TextureRegion[4];
         for (int n = 0; n < 4; n++) {
             String fileName = "mouse" + n + ".png";
-            Texture tex = new
-                    Texture(Gdx.files.internal(fileName));
-            tex.setFilter(TextureFilter.Linear,
-                    TextureFilter.Linear);
+            Texture tex = new Texture(Gdx.files.internal(fileName));
+            tex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
             frames[n] = new TextureRegion(tex);
         }
-        Array<TextureRegion> framesArray = new
-                Array<TextureRegion>(frames);
+        Array<TextureRegion> framesArray = new Array<TextureRegion>(frames);
         Animation anim = new Animation(0.1f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
         mousey.setAnimation(anim);
         mousey.setOrigin(mousey.getWidth() / 2,
@@ -92,7 +79,8 @@ public class CheeseLevel implements Screen {
         win = false;
     }
 
-    public void render(float dt) {
+    @Override
+    public void update(float dt) {
 // process input
         mousey.velocityX = 0;
         mousey.velocityY = 0;
@@ -105,21 +93,12 @@ public class CheeseLevel implements Screen {
             mousey.velocityY += 100;
         if (Gdx.input.isKeyPressed(Keys.DOWN))
             mousey.velocityY -= 100;
-        if (Gdx.input.isKeyPressed(Keys.M))
-            game.setScreen(new CheeseMenu(game));
-// update
-        mainStage.act(dt);
-        uiStage.act(dt);
-// bound mousey to the rectangle defined by mapWidth, mapHeight
-        mousey.setX(MathUtils.clamp(mousey.getX(),
-                0, mapWidth - mousey.getWidth()));
-        mousey.setY(MathUtils.clamp(mousey.getY(),
-                0, mapHeight - mousey.getHeight()));
-// check win condition: mousey must be overlapping cheese
-        Rectangle cheeseRectangle
-                = cheese.getBoundingRectangle();
-        Rectangle mouseyRectangle
-                = mousey.getBoundingRectangle();
+        // bound mousey to the rectangle defined by mapWidth, mapHeight
+        mousey.setX(MathUtils.clamp(mousey.getX(),0, mapWidth - mousey.getWidth()));
+        mousey.setY(MathUtils.clamp(mousey.getY(),0, mapHeight - mousey.getHeight()));
+        // check win condition: mousey must be overlapping cheese
+        Rectangle cheeseRectangle = cheese.getBoundingRectangle();
+        Rectangle mouseyRectangle = mousey.getBoundingRectangle();
         if (!win && cheeseRectangle.contains(mouseyRectangle)) {
             win = true;
             winText.addAction(Actions.sequence(
@@ -159,6 +138,15 @@ public class CheeseLevel implements Screen {
         cam.update();
         mainStage.draw();
         uiStage.draw();
+    }
+
+    // InputProcessor methods for handling discrete input
+    public boolean keyDown(int keycode) {
+        if (keycode == Keys.M)
+            game.setScreen(new CheeseMenu(game));
+        if (keycode == Keys.P)
+            togglePaused();
+        return false;
     }
 
     public void resize(int width, int height) { }
