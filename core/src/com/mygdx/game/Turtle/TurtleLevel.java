@@ -75,34 +75,30 @@ public class TurtleLevel extends BaseScreen {
         turtle.storeAnimation("rest", frame1);
         turtle.setOrigin(turtle.getWidth() / 2, turtle.getHeight() / 2);
         turtle.setPosition(20, 20);
-        turtle.setRotation(90);
+        turtle.setRotation(0);
         turtle.setEllipseBoundary();
-        turtle.setMaxSpeed(100);
-        turtle.setDeceleration(200);
+        turtle.setMaxSpeed(150);
+        turtle.setDeceleration(100);
         mainStage.addActor(turtle);
     }
 
     public void update(float dt) {
-// process input
+        // process input
         turtle.setAccelerationXY(0, 0);
         if (Gdx.input.isKeyPressed(Keys.LEFT))
             turtle.rotateBy(90 * dt);
         if (Gdx.input.isKeyPressed(Keys.RIGHT))
             turtle.rotateBy(-90 * dt);
         if (Gdx.input.isKeyPressed(Keys.UP))
-            turtle.accelerateForward(100);
-// set correct animation
-        if (turtle.getSpeed() > 1 &&
-                turtle.getAnimationName().equals("rest"))
+            turtle.accelerateForward(150);
+        // set correct animation
+        if (turtle.getSpeed() > 1 && turtle.getAnimationName().equals("rest"))
             turtle.setActiveAnimation("swim");
-        if (turtle.getSpeed() < 1 &&
-                turtle.getAnimationName().equals("swim"))
+        if (turtle.getSpeed() < 1 && turtle.getAnimationName().equals("swim"))
             turtle.setActiveAnimation("rest");
-// bound turtle to the screen
-        turtle.setX(MathUtils.clamp(turtle.getX(), 0, mapWidth
-                - turtle.getWidth()));
-        turtle.setY(MathUtils.clamp(turtle.getY(),
-                0, mapHeight - turtle.getHeight()));
+        // bound turtle to the screen
+        turtle.setX(MathUtils.clamp(turtle.getX(), 0, mapWidth - turtle.getWidth()));
+        turtle.setY(MathUtils.clamp(turtle.getY(), 0, mapHeight - turtle.getHeight()));
         for (BaseActor r : rockList) {
             turtle.overlaps(r, true);
         }
