@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.mygdx.game.BaseActor;
+import com.mygdx.game.BaseGame;
 import com.mygdx.game.BaseScreen;
 
 public class BalloonLevel extends BaseScreen {
@@ -26,7 +27,7 @@ public class BalloonLevel extends BaseScreen {
     final int mapWidth = 640;
     final int mapHeight = 480;
 
-    public BalloonLevel(Game g) {
+    public BalloonLevel(BaseGame g) {
         super(g);
     }
 

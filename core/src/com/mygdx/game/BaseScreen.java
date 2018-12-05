@@ -8,18 +8,23 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 public abstract class BaseScreen implements Screen, InputProcessor {
-    protected Game game;
+    protected BaseGame game;
     protected Stage mainStage;
     protected Stage uiStage;
+    protected Table uiTable;
     public final int viewWidth = 640;
     public final int viewHeight = 480;
     private boolean paused;
 
-    public BaseScreen(Game g) {
+    public BaseScreen(BaseGame g) {
         game = g;
         mainStage = new Stage(new FitViewport(viewWidth, viewHeight));
         uiStage = new Stage(new FitViewport(viewWidth, viewHeight));
+        uiTable = new Table();
+        uiTable.setFillParent(true);
+        uiStage.addActor(uiTable);
         paused = false;
         InputMultiplexer im = new InputMultiplexer(this, uiStage, mainStage);
         Gdx.input.setInputProcessor(im);

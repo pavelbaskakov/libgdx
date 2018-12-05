@@ -11,8 +11,14 @@ import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.BaseActor;
+import com.mygdx.game.BaseGame;
 import com.mygdx.game.BaseScreen;
 import com.mygdx.game.PhysicsActor;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 import java.util.ArrayList;
 
@@ -23,12 +29,26 @@ public class TurtleLevel extends BaseScreen {
     private PhysicsActor turtle;
     private int mapWidth = 800;
     private int mapHeight = 600;
+    private Label starfishLeftLabel;
 
-    public TurtleLevel(Game g) {
+    public TurtleLevel(BaseGame g) {
         super(g);
     }
 
     public void create() {
+        starfishLeftLabel = new Label("Starfish Left: --", game.skin, "uiLabelStyle");
+        Texture pauseTexture = new Texture(Gdx.files.internal("pause.png"));
+        game.skin.add("pauseImage", pauseTexture );
+        ButtonStyle pauseStyle = new ButtonStyle();
+        pauseStyle.up = game.skin.getDrawable("pauseImage");
+        Button pauseButton = new Button(pauseStyle);
+        pauseButton.addListener(new InputListener() {
+            public boolean touchDown(InputEvent event, float x,
+                                     float y, int pointer, int button) {
+                togglePaused();
+                return true;
+            }
+        });
         ocean = new BaseActor();
         ocean.setTexture(new Texture(Gdx.files.internal("water.jpg")));
         ocean.setPosition(0, 0);
@@ -80,6 +100,13 @@ public class TurtleLevel extends BaseScreen {
         turtle.setMaxSpeed(150);
         turtle.setDeceleration(100);
         mainStage.addActor(turtle);
+        uiTable.pad(10);
+        uiTable.add(starfishLeftLabel);
+        uiTable.add().expandX();
+        uiTable.add(pauseButton);
+        uiTable.row();
+        uiTable.add().colspan(3).expandY();
+        overlay.toBack();
     }
 
     public void update(float dt) {
@@ -112,5 +139,6 @@ public class TurtleLevel extends BaseScreen {
             b.remove(); // remove from stage
             starfishList.remove(b); // remove from list used byupdate
         }
+        starfishLeftLabel.setText( "Starfish Left: " + starfishList.size() );
     }
 }
