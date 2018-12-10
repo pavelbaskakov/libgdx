@@ -243,7 +243,7 @@ public class TurtleLevel extends BaseScreen {
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))
             turtle.accelerateForward(100);
 
-        //set correct animation
+        //set correct animationStack
         if (turtle.getSpeed() > 1 && turtle.getAnimationName().equals("rest"))
             turtle.setActiveAnimation("swim");
         if (turtle.getSpeed() < 1 && turtle.getAnimationName().equals("swim"))
