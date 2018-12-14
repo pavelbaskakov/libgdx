@@ -92,7 +92,7 @@ public class GameScreen extends BaseScreen {
         baseLaser.setOriginCenter();
         baseLaser.setAutoAngle(true);
 
-        laserList = new ArrayList<PhysicsActor>();
+        laserList = new ArrayList<>();
         removeList = new ArrayList<>();
         rockList = new ArrayList<>();
 

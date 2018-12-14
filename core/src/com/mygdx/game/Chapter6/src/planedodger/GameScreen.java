@@ -388,7 +388,6 @@ public class GameScreen extends BaseScreen {
 
     }
 
-
     @Override
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.SPACE) {

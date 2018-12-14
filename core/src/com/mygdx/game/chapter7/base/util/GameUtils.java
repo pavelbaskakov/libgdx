@@ -1,4 +1,4 @@
-package com.mygdx.game.Chapter6.src.base_A.util;
+package com.mygdx.game.chapter7.base.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Array;
 public class GameUtils {
 
     public static Animation parseSpriteSheet(String fileName, int frameCols, int frameRows,
-                                             float frameDuration, com.badlogic.gdx.graphics.g2d.Animation.PlayMode mode) {
+                                             float frameDuration, Animation.PlayMode mode) {
         Texture t = new Texture(fileName);
         t.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
@@ -50,5 +50,32 @@ public class GameUtils {
 
         Array<TextureRegion> framesArray = new Array<TextureRegion>(frames);
         return new Animation(frameDuration, framesArray,mode);
+    }
+
+    // creates an Animation from a single sprite sheet
+    // with a subset of the frames, specified by an array
+    public static Animation parseSpriteSheet(
+            String fileName, int frameCols, int frameRows,
+            int[] frameIndices, float frameDuration, Animation.PlayMode mode
+    ) {
+        Texture t = new Texture(Gdx.files.internal(fileName), true);
+        t.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        int frameWidth = t.getWidth() / frameCols;
+        int frameHeight = t.getHeight() / frameRows;
+        TextureRegion[][] temp = TextureRegion.split(t, frameWidth, frameHeight);
+        TextureRegion[] frames = new TextureRegion[frameCols * frameRows];
+        int index = 0;
+        for (int i = 0; i < frameRows; i++) {
+            for (int j = 0; j < frameCols; j++) {
+                frames[index] = temp[i][j];
+                index++;
+            }
+        }
+        Array<TextureRegion> framesArray = new Array<>();
+        for (int n = 0; n < frameIndices.length; n++) {
+            int i = frameIndices[n];
+            framesArray.add( frames[i] );
+        }
+        return new Animation(frameDuration, framesArray, mode);
     }
 }

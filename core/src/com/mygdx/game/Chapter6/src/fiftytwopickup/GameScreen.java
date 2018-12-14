@@ -90,6 +90,7 @@ public class GameScreen extends BaseScreen {
 
                     @Override
                     public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                        System.out.println("dragged: x = " + x + " y = " + y);
                         if (!card.draggable) return;
 
                         card.moveBy(x - card.offsetX, y - card.offsetY);

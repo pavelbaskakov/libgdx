@@ -118,7 +118,8 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void update(float dt) {
-        paddle.setPosition(Gdx.input.getX() - paddle.getWidth() / 2, 32);
+        //  - paddle.getWidth() / 2
+        paddle.setPosition(Gdx.input.getX(), 32);
 
         if (paddle.getX() < 0 ) {
             paddle.setX(0);

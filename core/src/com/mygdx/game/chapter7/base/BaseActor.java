@@ -1,4 +1,4 @@
-package com.mygdx.game.Chapter6.src.base_A;
+package com.mygdx.game.chapter7.base;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
