@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -77,5 +78,33 @@ public class GameUtils {
             framesArray.add( frames[i] );
         }
         return new Animation(frameDuration, framesArray, mode);
+    }
+
+    public static Object getContactObject(Contact theContact,
+                                          Class theClass)
+    {
+        Object objA
+                = theContact.getFixtureA().getBody().getUserData();
+        Object objB
+                = theContact.getFixtureB().getBody().getUserData();
+        if (objA.getClass().equals(theClass) )
+            return objA;
+        else if (objB.getClass().equals(theClass) )
+            return objB;
+        else
+            return null;
+    }
+
+    public static Object getContactObject(Contact theContact, Class theClass, String fixtureName) {
+        Object objA = theContact.getFixtureA().getBody().getUserData();
+        String nameA = (String)theContact.getFixtureA().getUserData();
+        Object objB = theContact.getFixtureB().getBody().getUserData();
+        String nameB = (String)theContact.getFixtureB().getUserData();
+        if ( objA.getClass().equals(theClass) && nameA.equals(fixtureName) )
+            return objA;
+        else if ( objB.getClass().equals(theClass) && nameB.equals(fixtureName))
+            return objB;
+        else
+            return null;
     }
 }
