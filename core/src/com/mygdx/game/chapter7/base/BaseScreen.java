@@ -9,8 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-public abstract class BaseScreen implements Screen, InputProcessor
-{
+public abstract class BaseScreen implements Screen, InputProcessor {
     protected BaseGame game;
 
     protected Stage mainStage;
